@@ -8,6 +8,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 
         <!-- Styles -->
         <style>
@@ -20,20 +21,34 @@
             }
         </style>
     </head>
-    <body class="antialiased">
-        <h1>Listado de etiquetas</h1>
-        <table>
-            @forelse($tags as $tag)
-                <tr>
-                    <td>{{ $tag->name }}</td>
-                </tr>
-            @empty
-                <tr>
-                    <td>
-                        <p>No hay etiquetas</p>
-                    </td>
-                </tr>
-            @endforelse 
-        </table>
+    <body class="antialiased bg-gray py-10" >
+        <div class="max-w-lg bg-white mx-auto p-5 rounded shadow">
+            <form action="tags" method="post" class="flex mb-4">
+                @csrf                
+                <input type="text" name="name" id="" class="rounded-l bg-gray-200 p-4 w-full outline-non" placeholder="Nueva etiqueta">
+                <input type="submit" value="Agregar" class="rounded-r px-8 bg-blue-500 text-white outline-non">
+            </form>
+            <h1 class="text-lg text-center mb-4">Listado de etiquetas</h1>
+            <table>
+                @forelse($tags as $tag)
+                    <tr>
+                        <td class="border px-4 py-2">{{ $tag->name }}</td>
+                        <td class="px-4 py-2">
+                            <form action="tags/{{$tag->id}}" method="post">
+                                @csrf
+                                @method("DELETE")
+                                <input type="submit" value="Eliminar" class="px-4 rounded bg-red-500 text-white">
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td>
+                            <p>No hay etiquetas</p>
+                        </td>
+                    </tr>
+                @endforelse 
+            </table>
+        </div>
     </body>
 </html>
